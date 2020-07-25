@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void store(User user) {
+    public void save(User user) {
         user.setPassword(encrypt.getMd5(user.getPassword()));
         userRepository.save(user);
     }

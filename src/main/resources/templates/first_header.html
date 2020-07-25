@@ -1,0 +1,45 @@
+<div class="header py-4" xmlns:th="http://www.thymeleaf.org">
+  <div class="container">
+    <div class="d-flex">
+      <a class="header-brand" th:href="@{/}">
+        <b><i>FindComputer</i></b>
+      </a>
+      <div class="d-flex order-lg-2 ml-auto">
+        <div th:if="${session.userId != null}">
+          <div class="dropdown">
+            <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+              <h3><span class="fe fe-user"></span></h3>
+              <span class="ml-2 d-none d-lg-block">
+              <span class="text-default" th:text="${session.userName}"></span>
+              <small class="text-muted d-block mt-1">&nbsp;</small>
+            </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+              <a class="dropdown-item" th:href="@{/profile}">
+                <i class="dropdown-icon fe fe-package"></i> Toko Saya
+              </a>
+              <a class="dropdown-item" th:href="@{/profile}">
+                <i class="dropdown-icon fe fe-user"></i> Profil Saya
+              </a>
+              <a class="dropdown-item" th:href="@{/logout}">
+                <i class="dropdown-icon fe fe-log-out"></i> Keluar
+              </a>
+            </div>
+          </div>
+        </div>
+        <div th:unless="${session.userId != null}">
+          <div class="nav-item d-none d-md-flex">
+            <a th:href="@{/login}" class="btn btn-sm btn-primary mr-2" target="">Masuk</a>
+            <a th:href="@{/register}" class="btn btn-sm btn-outline-info" target="">Daftar</a>
+          </div>
+          <div class="nav-item d-none d-md-flex">
+          </div>
+        </div>
+      </div>
+      <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse"
+         data-target="#headerMenuCollapse">
+        <span class="header-toggler-icon"></span>
+      </a>
+    </div>
+  </div>
+</div>

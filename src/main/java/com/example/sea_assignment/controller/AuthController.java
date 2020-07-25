@@ -31,9 +31,9 @@ public class AuthController {
     public String register(@ModelAttribute("user") User user, Model model){
         User emailExist = userService.findByEmail(user.getEmail());
         if (emailExist == null){
-            userService.store(user);
+            userService.save(user);
             model.addAttribute("success", true);
-            return "redirect:/login";
+            return "redirect:/login?regisSuccess=true";
         }
         else {
             return "redirect:/register?emailExist=true";
@@ -43,8 +43,7 @@ public class AuthController {
     @GetMapping("/login")
     public String loginForm(Model model, HttpSession session){
         try {
-            User user = (User) session.getAttribute("user");
-            user.getId();
+            int userId = (int) session.getAttribute("userId");
             return "redirect:/";
         }
         catch (NullPointerException e){
@@ -61,7 +60,10 @@ public class AuthController {
     public String login(@ModelAttribute("user") User user, Model model, HttpSession session){
         User emailExist = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
         if (emailExist != null){
-            session.setAttribute("user", emailExist);
+            session.setAttribute("userId", emailExist.getId());
+            session.setAttribute("userEmail", emailExist.getEmail());
+            session.setAttribute("userAddress", emailExist.getAddress());
+            session.setAttribute("userName", emailExist.getName());
             return "redirect:/";
         }
         else {
@@ -72,9 +74,12 @@ public class AuthController {
     @GetMapping("/logout")
     public String logout(HttpSession session){
         try {
-            User user = (User) session.getAttribute("user");
-            if (user.getId() > 0){
-                session.removeAttribute("user");
+            int userId = (int) session.getAttribute("userId");
+            if (userId > 0){
+                session.removeAttribute("userId");
+                session.removeAttribute("userEmail");
+                session.removeAttribute("userAddress");
+                session.removeAttribute("userName");
             }
             return "redirect:/";
         }

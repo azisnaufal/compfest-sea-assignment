@@ -18,7 +18,6 @@ public class User {
 
     @Column(name = "password")
     private String password;
-    private String repassword;
 
     @Column(name = "address")
     private String address;
@@ -53,14 +52,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRepassword() {
-        return repassword;
-    }
-
-    public void setRepassword(String repassword) {
-        this.repassword = repassword;
     }
 
     public String getAddress() {

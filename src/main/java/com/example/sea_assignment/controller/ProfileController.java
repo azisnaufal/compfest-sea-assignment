@@ -20,8 +20,8 @@ public class ProfileController {
     @GetMapping("/profile")
     public String show(Model model, HttpSession session){
         try {
-            User user = (User) session.getAttribute("user");
-            user.getId();
+            int userId = (int) session.getAttribute("userId");
+            User user = userService.getById(userId);
             model.addAttribute(user);
             return "profile";
         }
@@ -31,15 +31,18 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/update")
-    public String update(@ModelAttribute("user") User user, Model model){
+    public String update(@ModelAttribute("user") User user, Model model, HttpSession session){
         User emailExist = userService.findByEmail(user.getEmail());
-        if (emailExist == null){
-            userService.store(user);
-            model.addAttribute("success", true);
-            return "redirect:/login";
+        if (emailExist != null && emailExist.getId() != user.getId()){
+            return "redirect:/profile?emailUsed=true";
         }
         else {
-            return "redirect:/register?emailExist=true";
+            userService.save(user);
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userEmail", user.getEmail());
+            session.setAttribute("userAddress", user.getAddress());
+            session.setAttribute("userName", user.getName());
+            return "redirect:/profile?success=true";
         }
     }
 }
